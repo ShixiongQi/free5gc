@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../updk/include/linux/list.h
+
+../updk/include/updk/env.h
+linux/list.h
+../updk/include/updk/linux/list.h
+netinet/in.h
+-
+
+/users/sqi009/free5gc/NFs/upf/updk/src/env.c
+updk/env.h
+/users/sqi009/free5gc/NFs/upf/updk/src/updk/env.h
+stdlib.h
+-
+linux/list.h
+/users/sqi009/free5gc/NFs/upf/updk/src/linux/list.h
+

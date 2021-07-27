@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/users/sqi009/free5gc/NFs/upf/lib/pfcp/test/test.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+dirent.h
+-
+

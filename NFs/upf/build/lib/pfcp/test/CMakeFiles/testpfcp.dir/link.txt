@@ -1,0 +1,1 @@
+/usr/bin/gcc    CMakeFiles/testpfcp.dir/test.c.o  -o /users/sqi009/free5gc/NFs/upf/build/bin/testpfcp   -L/users/sqi009/free5gc/NFs/upf/build/utlt_logger 
