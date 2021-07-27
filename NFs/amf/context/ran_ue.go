@@ -132,7 +132,7 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 	if userLocationInformation == nil {
 		return
 	}
-
+	var ts, te int64
 	amfSelf := AMF_Self()
 	curTime := time.Now().UTC()
 	switch userLocationInformation.Present {
@@ -143,8 +143,14 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		}
 
 		tAI := locationInfoEUTRA.TAI
+		ts = time.Now().UnixNano() // Record the start timestamp of PlmnIdToModels
 		plmnID := ngapConvert.PlmnIdToModels(tAI.PLMNIdentity)
+		te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
+		fmt.Printf("QLOG: Latency of PlmnIdToModels (EUTRA) (nanos): %d\n", te-ts)
+		ts = time.Now().UnixNano() // Record the start timestamp of EncodeToString
 		tac := hex.EncodeToString(tAI.TAC.Value)
+		te = time.Now().UnixNano() // Record the end timestamp of EncodeToString
+		fmt.Printf("QLOG: Latency of EncodeToString (EUTRA) (nanos): %d\n", te-ts)
 
 		if ranUe.Location.EutraLocation.Tai == nil {
 			ranUe.Location.EutraLocation.Tai = new(models.Tai)
@@ -181,8 +187,14 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		}
 
 		tAI := locationInfoNR.TAI
+		ts = time.Now().UnixNano() // Record the start timestamp of PlmnIdToModels
 		plmnID := ngapConvert.PlmnIdToModels(tAI.PLMNIdentity)
+		te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
+		fmt.Printf("QLOG: Latency of TAI PlmnIdToModels (NR) (nanos): %d\n", te-ts)
+		ts = time.Now().UnixNano() // Record the start timestamp of EncodeToString
 		tac := hex.EncodeToString(tAI.TAC.Value)
+		te = time.Now().UnixNano() // Record the end timestamp of EncodeToString
+		fmt.Printf("QLOG: Latency of TAI EncodeToString (NR) (nanos): %d\n", te-ts)
 
 		if ranUe.Location.NrLocation.Tai == nil {
 			ranUe.Location.NrLocation.Tai = new(models.Tai)
@@ -192,8 +204,14 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		ranUe.Tai = deepcopy.Copy(*ranUe.Location.NrLocation.Tai).(models.Tai)
 
 		nRCGI := locationInfoNR.NRCGI
+		ts = time.Now().UnixNano() // Record the start timestamp of PlmnIdToModels
 		nRPlmnID := ngapConvert.PlmnIdToModels(nRCGI.PLMNIdentity)
+		te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
+		fmt.Printf("QLOG: Latency of NRCGI PlmnIdToModels (NR) (nanos): %d\n", te-ts)
+		ts = time.Now().UnixNano() // Record the start timestamp of BitStringToHex
 		nRCellID := ngapConvert.BitStringToHex(&nRCGI.NRCellIdentity.Value)
+		te = time.Now().UnixNano() // Record the end timestamp of BitStringToHex
+		fmt.Printf("QLOG: Latency of NRCGI BitStringToHex (NR) (nanos): %d\n", te-ts)
 
 		if ranUe.Location.NrLocation.Ncgi == nil {
 			ranUe.Location.NrLocation.Ncgi = new(models.Ncgi)
