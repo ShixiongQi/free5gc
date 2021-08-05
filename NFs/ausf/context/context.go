@@ -1,7 +1,7 @@
 package context
 
 import (
-	"fmt"
+	// "fmt"
 	"regexp"
 	"sync"
 	"time"
@@ -86,14 +86,16 @@ func AddAusfUeContextToPool(ausfUeContext *AusfUeContext) {
 	ts := time.Now().UnixNano() // Record the start timestamp of AddAusfUeContextToPool
 	ausfContext.UePool.Store(ausfUeContext.Supi, ausfUeContext)
 	te := time.Now().UnixNano() // Record the end timestamp of AddAusfUeContextToPool
-	fmt.Printf("QLOG: Latency of SUPI insertion in AddAusfUeContextToPool (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI insertion in AddAusfUeContextToPool (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI insertion in AddAusfUeContextToPool (nanos): %d", te-ts)
 }
 
 func CheckIfAusfUeContextExists(ref string) bool {
 	ts := time.Now().UnixNano() // Record the start timestamp of CheckIfAusfUeContextExists
 	_, ok := ausfContext.UePool.Load(ref)
 	te := time.Now().UnixNano() // Record the end timestamp of CheckIfAusfUeContextExists
-	fmt.Printf("QLOG: Latency of SUPI lookup in CheckIfAusfUeContextExists (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI lookup in CheckIfAusfUeContextExists (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI lookup in CheckIfAusfUeContextExists (nanos): %d", te-ts)
 	return ok
 }
 
@@ -101,7 +103,8 @@ func GetAusfUeContext(ref string) *AusfUeContext {
 	ts := time.Now().UnixNano() // Record the start timestamp of GetAusfUeContext
 	context, _ := ausfContext.UePool.Load(ref)
 	te := time.Now().UnixNano() // Record the end timestamp of GetAusfUeContext
-	fmt.Printf("QLOG: Latency of SUPI lookup in GetAusfUeContext (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI lookup in GetAusfUeContext (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI lookup in GetAusfUeContext (nanos): %d", te-ts)
 	ausfUeContext := context.(*AusfUeContext)
 	return ausfUeContext
 }
@@ -113,14 +116,16 @@ func AddSuciSupiPairToMap(supiOrSuci string, supi string) {
 	ts := time.Now().UnixNano() // Record the start timestamp of AddSuciSupiPairToMap
 	ausfContext.suciSupiMap.Store(supiOrSuci, newPair)
 	te := time.Now().UnixNano() // Record the end timestamp of AddSuciSupiPairToMap
-	fmt.Printf("QLOG: Latency of SUPI insertion in AddSuciSupiPairToMap (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI insertion in AddSuciSupiPairToMap (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI insertion in AddSuciSupiPairToMap (nanos): %d", te-ts)
 }
 
 func CheckIfSuciSupiPairExists(ref string) bool {
 	ts := time.Now().UnixNano() // Record the start timestamp of CheckIfSuciSupiPairExists
 	_, ok := ausfContext.suciSupiMap.Load(ref)
 	te := time.Now().UnixNano() // Record the end timestamp of CheckIfSuciSupiPairExists
-	fmt.Printf("QLOG: Latency of SUPI lookup in CheckIfSuciSupiPairExists (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI lookup in CheckIfSuciSupiPairExists (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI lookup in CheckIfSuciSupiPairExists (nanos): %d", te-ts)
 	return ok
 }
 
@@ -128,7 +133,8 @@ func GetSupiFromSuciSupiMap(ref string) (supi string) {
 	ts := time.Now().UnixNano() // Record the start timestamp of GetSupiFromSuciSupiMap
 	val, _ := ausfContext.suciSupiMap.Load(ref)
 	te := time.Now().UnixNano() // Record the end timestamp of GetSupiFromSuciSupiMap
-	fmt.Printf("QLOG: Latency of SUPI lookup in GetSupiFromSuciSupiMap (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI lookup in GetSupiFromSuciSupiMap (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI lookup in GetSupiFromSuciSupiMap (nanos): %d", te-ts)
 	suciSupiMap := val.(*SuciSupiMap)
 	supi = suciSupiMap.Supi
 	return supi

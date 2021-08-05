@@ -2,7 +2,7 @@ package ngap
 
 import (
 	"encoding/hex"
-	"fmt"
+	// "fmt"
 	"strconv"
 	"time"
 
@@ -492,25 +492,29 @@ func HandleUEContextReleaseComplete(ran *context.AmfRan, message *ngapType.NGAPP
 				ts = time.Now().UnixNano() // Record the start timestamp of PlmnIdToModels
 				plmnID := ngapConvert.PlmnIdToModels(item.NGRANCGI.NRCGI.PLMNIdentity)
 				te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
-				fmt.Printf("QLOG: Latency of NGRANCGIPresentNRCGI PlmnIdToModels (nanos): %d\n", te-ts)
+				// fmt.Printf("QLOG: Latency of NGRANCGIPresentNRCGI PlmnIdToModels (nanos): %d\n", te-ts)
+				logger.ContextLog.Infof("QLOG: Latency of NGRANCGIPresentNRCGI PlmnIdToModels (nanos): %d", te-ts)
 				recommendedCell.NgRanCGI.NRCGI.PlmnId = &plmnID
 				ts = time.Now().UnixNano() // Record the start timestamp of BitStringToHex
 				recommendedCell.NgRanCGI.NRCGI.NrCellId = ngapConvert.BitStringToHex(&item.NGRANCGI.NRCGI.NRCellIdentity.Value)
 				te = time.Now().UnixNano() // Record the end timestamp of BitStringToHex
-				fmt.Printf("QLOG: Latency of NGRANCGIPresentNRCGI BitStringToHex (nanos): %d\n", te-ts)
+				// fmt.Printf("QLOG: Latency of NGRANCGIPresentNRCGI BitStringToHex (nanos): %d\n", te-ts)
+				logger.ContextLog.Infof("QLOG: Latency of NGRANCGIPresentNRCGI BitStringToHex (nanos): %d", te-ts)
 			case ngapType.NGRANCGIPresentEUTRACGI:
 				recommendedCell.NgRanCGI.Present = context.NgRanCgiPresentEUTRACGI
 				recommendedCell.NgRanCGI.EUTRACGI = new(models.Ecgi)
 				ts = time.Now().UnixNano() // Record the start timestamp of PlmnIdToModels
 				plmnID := ngapConvert.PlmnIdToModels(item.NGRANCGI.EUTRACGI.PLMNIdentity)
 				te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
-				fmt.Printf("QLOG: Latency of NGRANCGIPresentEUTRACGI PlmnIdToModels (nanos): %d\n", te-ts)
+				// fmt.Printf("QLOG: Latency of NGRANCGIPresentEUTRACGI PlmnIdToModels (nanos): %d\n", te-ts)
+				logger.ContextLog.Infof("QLOG: Latency of NGRANCGIPresentEUTRACGI PlmnIdToModels (nanos): %d", te-ts)
 				recommendedCell.NgRanCGI.EUTRACGI.PlmnId = &plmnID
 				ts = time.Now().UnixNano() // Record the start timestamp of BitStringToHex
 				recommendedCell.NgRanCGI.EUTRACGI.EutraCellId = ngapConvert.BitStringToHex(
 					&item.NGRANCGI.EUTRACGI.EUTRACellIdentity.Value)
 				te = time.Now().UnixNano() // Record the end timestamp of BitStringToHex
-				fmt.Printf("QLOG: Latency of NGRANCGIPresentEUTRACGI BitStringToHex (nanos): %d\n", te-ts)
+				// fmt.Printf("QLOG: Latency of NGRANCGIPresentEUTRACGI BitStringToHex (nanos): %d\n", te-ts)
+				logger.ContextLog.Infof("QLOG: Latency of NGRANCGIPresentEUTRACGI BitStringToHex (nanos): %d", te-ts)
 			}
 
 			if item.TimeStayedInCell != nil {

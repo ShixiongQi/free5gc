@@ -146,11 +146,13 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		ts = time.Now().UnixNano() // Record the start timestamp of PlmnIdToModels
 		plmnID := ngapConvert.PlmnIdToModels(tAI.PLMNIdentity)
 		te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
-		fmt.Printf("QLOG: Latency of PlmnIdToModels (EUTRA) (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of PlmnIdToModels (EUTRA) (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of PlmnIdToModels (EUTRA) (nanos): %d", te-ts)
 		ts = time.Now().UnixNano() // Record the start timestamp of EncodeToString
 		tac := hex.EncodeToString(tAI.TAC.Value)
 		te = time.Now().UnixNano() // Record the end timestamp of EncodeToString
-		fmt.Printf("QLOG: Latency of EncodeToString (EUTRA) (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of EncodeToString (EUTRA) (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of EncodeToString (EUTRA) (nanos): %d", te-ts)
 
 		if ranUe.Location.EutraLocation.Tai == nil {
 			ranUe.Location.EutraLocation.Tai = new(models.Tai)
@@ -191,10 +193,12 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		plmnID := ngapConvert.PlmnIdToModels(tAI.PLMNIdentity)
 		te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
 		fmt.Printf("QLOG: Latency of TAI PlmnIdToModels (NR) (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of TAI PlmnIdToModels (NR) (nanos): %d", te-ts)
 		ts = time.Now().UnixNano() // Record the start timestamp of EncodeToString
 		tac := hex.EncodeToString(tAI.TAC.Value)
 		te = time.Now().UnixNano() // Record the end timestamp of EncodeToString
 		fmt.Printf("QLOG: Latency of TAI EncodeToString (NR) (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of TAI EncodeToString (NR) (nanos): %d", te-ts)
 
 		if ranUe.Location.NrLocation.Tai == nil {
 			ranUe.Location.NrLocation.Tai = new(models.Tai)
@@ -207,11 +211,13 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		ts = time.Now().UnixNano() // Record the start timestamp of PlmnIdToModels
 		nRPlmnID := ngapConvert.PlmnIdToModels(nRCGI.PLMNIdentity)
 		te = time.Now().UnixNano() // Record the end timestamp of PlmnIdToModels
-		fmt.Printf("QLOG: Latency of NRCGI PlmnIdToModels (NR) (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of NRCGI PlmnIdToModels (NR) (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of NRCGI PlmnIdToModels (NR) (nanos): %d", te-ts)
 		ts = time.Now().UnixNano() // Record the start timestamp of BitStringToHex
 		nRCellID := ngapConvert.BitStringToHex(&nRCGI.NRCellIdentity.Value)
 		te = time.Now().UnixNano() // Record the end timestamp of BitStringToHex
-		fmt.Printf("QLOG: Latency of NRCGI BitStringToHex (NR) (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of NRCGI BitStringToHex (NR) (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of NRCGI BitStringToHex (NR) (nanos): %d", te-ts)
 
 		if ranUe.Location.NrLocation.Ncgi == nil {
 			ranUe.Location.NrLocation.Ncgi = new(models.Ncgi)

@@ -317,7 +317,8 @@ func Auth5gAkaComfirmRequestProcedure(updateConfirmationData models.Confirmation
 	ts = time.Now().UnixNano() // Record the start timestamp of comparing the received RES* with the stored XRES*
 	if strings.Compare(updateConfirmationData.ResStar, ausfCurrentContext.XresStar) == 0 {
 		te = time.Now().UnixNano() // Record the end timestamp of comparing the received RES* with the stored XRES*
-		fmt.Printf("QLOG: Latency of comparing the received RES* with the stored XRES* (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of comparing the received RES* with the stored XRES* (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of comparing the received RES* with the stored XRES* (nanos): %d", te-ts)
 		ausfCurrentContext.AuthStatus = models.AuthResult_SUCCESS
 		responseBody.AuthResult = models.AuthResult_SUCCESS
 		success = true

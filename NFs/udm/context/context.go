@@ -13,6 +13,7 @@ import (
 	"github.com/free5gc/openapi/Nnrf_NFDiscovery"
 	"github.com/free5gc/openapi/models"
 	"github.com/free5gc/udm/factory"
+	"github.com/free5gc/udm/logger"
 )
 
 var udmContext UDMContext
@@ -248,7 +249,8 @@ func (context *UDMContext) NewUdmUe(supi string) *UdmUeContext {
 	ts := time.Now().UnixNano() // Record the start timestamp
 	context.UdmUePool.Store(supi, ue)
 	te := time.Now().UnixNano() // Record the end timestamp
-	fmt.Printf("QLOG: Latency of SUPI Store (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI Store (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI Store (nanos): %d", te-ts)
 	return ue
 }
 
@@ -258,12 +260,14 @@ func (context *UDMContext) UdmUeFindBySupi(supi string) (*UdmUeContext, bool) {
 	if value, ok := context.UdmUePool.Load(supi); ok {
 		// Record the end timestamp - Find the target SUPI
 		te := time.Now().UnixNano()
-		fmt.Printf("QLOG: Latency of SUPI Lookup (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of SUPI Lookup (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of SUPI Lookup (nanos): %d", te-ts)
 		return value.(*UdmUeContext), ok
 	} else {
 		// Record the end timestamp - Cannot find the target SUPI
 		te := time.Now().UnixNano()
-		fmt.Printf("QLOG: Latency of SUPI Lookup (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of SUPI Lookup (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of SUPI Lookup (nanos): %d", te-ts)
 		return nil, false
 	}
 }

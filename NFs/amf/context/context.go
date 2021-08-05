@@ -191,7 +191,8 @@ func (context *AMFContext) AddAmfUeToUePool(ue *AmfUe, supi string) {
 	ts := time.Now().UnixNano() // Record the start timestamp of AddAmfUeToUePool
 	context.UePool.Store(ue.Supi, ue)
 	te := time.Now().UnixNano() // Record the end timestamp of AddAmfUeToUePool
-	fmt.Printf("QLOG: Latency of SUPI insertion in AddAmfUeToUePool (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of SUPI insertion in AddAmfUeToUePool (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of SUPI insertion in AddAmfUeToUePool (nanos): %d", te-ts)
 }
 
 func (context *AMFContext) NewAmfUe(supi string) *AmfUe {
@@ -225,7 +226,8 @@ func (context *AMFContext) AmfUeFindBySupi(supi string) (ue *AmfUe, ok bool) {
 	ts := time.Now().UnixNano() // Record the start timestamp of AmfUeFindBySupi
 	if value, loadOk := context.UePool.Load(supi); loadOk {
 		te := time.Now().UnixNano() // Record the end timestamp of AmfUeFindBySupi
-		fmt.Printf("QLOG: Latency of SUPI lookup in AmfUeFindBySupi (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of SUPI lookup in AmfUeFindBySupi (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of SUPI lookup in AmfUeFindBySupi (nanos): %d", te-ts)
 		ue = value.(*AmfUe)
 		ok = loadOk
 	}

@@ -1,7 +1,7 @@
 package context
 
 import (
-	"fmt"
+	// "fmt"
 	"reflect"
 	"time"
 
@@ -30,7 +30,8 @@ func CompareUserLocation(loc1 models.UserLocation, loc2 models.UserLocation) boo
 		ts := time.Now().UnixNano() // Record the start timestamp of CompareUserLocation
 		isequal := reflect.DeepEqual(nrloc1, nrloc2)
 		te := time.Now().UnixNano() // Record the end timestamp of CompareUserLocation
-		fmt.Printf("QLOG: Latency of CompareUserLocation (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of CompareUserLocation (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of CompareUserLocation (nanos): %d", te-ts)
 		return isequal
 	}
 
@@ -42,7 +43,8 @@ func InTaiList(servedTai models.Tai, taiList []models.Tai) bool {
 		ts := time.Now().UnixNano() // Record the start timestamp of InTaiList
 		isequal := reflect.DeepEqual(tai, servedTai)
 		te := time.Now().UnixNano() // Record the end timestamp of InTaiList
-		fmt.Printf("QLOG: Latency of InTaiList[%d] Check (nanos): %d\n", i, te-ts)
+		// fmt.Printf("QLOG: Latency of InTaiList[%d] Check (nanos): %d\n", i, te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of InTaiList[%d] Check (nanos): %d", i, te-ts)
 		if isequal {
 			return true
 		}

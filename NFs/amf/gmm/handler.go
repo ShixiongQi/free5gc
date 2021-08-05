@@ -21,6 +21,7 @@ import (
 	ngap_message "github.com/free5gc/amf/ngap/message"
 	"github.com/free5gc/amf/producer/callback"
 	"github.com/free5gc/amf/util"
+	"github.com/free5gc/amf/logger"
 	"github.com/free5gc/fsm"
 	"github.com/free5gc/nas"
 	"github.com/free5gc/nas/nasConvert"
@@ -1916,7 +1917,8 @@ func HandleAuthenticationResponse(ue *context.AmfUe, accessType models.AccessTyp
 			ts = time.Now().UnixNano() // Record the start timestamp of DerivateKamf
 			ue.DerivateKamf()
 			te = time.Now().UnixNano() // Record the end timestamp of DerivateKamf
-			fmt.Printf("QLOG: Latency of DerivateKamf (5_G_AKA) (nanos): %d\n", te-ts)
+			// fmt.Printf("QLOG: Latency of DerivateKamf (5_G_AKA) (nanos): %d\n", te-ts)
+			logger.ContextLog.Infof("QLOG: Latency of DerivateKamf (5_G_AKA) (nanos): %d", te-ts)
 			ue.GmmLog.Debugln("ue.DerivateKamf()", ue.Kamf)
 			return GmmFSM.SendEvent(ue.State[accessType], AuthSuccessEvent, fsm.ArgsType{
 				ArgAmfUe:      ue,
@@ -1953,7 +1955,8 @@ func HandleAuthenticationResponse(ue *context.AmfUe, accessType models.AccessTyp
 			ts = time.Now().UnixNano() // Record the start timestamp of DerivateKamf
 			ue.DerivateKamf()
 			te = time.Now().UnixNano() // Record the end timestamp of DerivateKamf
-			fmt.Printf("QLOG: Latency of DerivateKamf (EAP_AKA) (nanos): %d\n", te-ts)
+			// fmt.Printf("QLOG: Latency of DerivateKamf (EAP_AKA) (nanos): %d\n", te-ts)
+			logger.ContextLog.Infof("QLOG: Latency of DerivateKamf (EAP_AKA) (nanos): %d", te-ts)
 			// TODO: select enc/int algorithm based on ue security capability & amf's policy,
 			// then generate KnasEnc, KnasInt
 			return GmmFSM.SendEvent(ue.State[accessType], SecurityModeSuccessEvent, fsm.ArgsType{

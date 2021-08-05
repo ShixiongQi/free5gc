@@ -292,7 +292,8 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 			ts = time.Now().UnixNano() // Record the start timestamp of OPC generation
 			opc, err = milenage.GenerateOPC(k, op)
 			te = time.Now().UnixNano() // Record the end timestamp of OPC generation
-			fmt.Printf("QLOG: Latency of OPC generation (from K and OP) (nanos): %d\n", te-ts)
+			// fmt.Printf("QLOG: Latency of OPC generation (from K and OP) (nanos): %d\n", te-ts)
+			logger.ContextLog.Infof("QLOG: Latency of OPC generation (from K and OP) (nanos): %d", te-ts)
 			if err != nil {
 				logger.UeauLog.Errorln("milenage GenerateOPC err ", err)
 			}
@@ -480,7 +481,8 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 	ts = time.Now().UnixNano() // Record the start timestamp
 	err = milenage.F1(opc, k, RAND, sqn, AMF, macA, macS)
 	te = time.Now().UnixNano() // Record the end timestamp
-	fmt.Printf("QLOG: Latency of milenage F1 encryption (Generate macA, macS) (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of milenage F1 encryption (Generate macA, macS) (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of milenage F1 encryption (Generate macA, macS) (nanos): %d", te-ts)
 	if err != nil {
 		logger.UeauLog.Errorln("milenage F1 err ", err)
 	}
@@ -490,7 +492,8 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 	ts = time.Now().UnixNano() // Record the start timestamp
 	err = milenage.F2345(opc, k, RAND, RES, CK, IK, AK, AKstar)
 	te = time.Now().UnixNano() // Record the end timestamp
-	fmt.Printf("QLOG: Latency of milenage F2345 encryption (Generate RES, CK, IK, AK, AKstar) (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of milenage F2345 encryption (Generate RES, CK, IK, AK, AKstar) (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of milenage F2345 encryption (Generate RES, CK, IK, AK, AKstar) (nanos): %d", te-ts)
 	if err != nil {
 		logger.UeauLog.Errorln("milenage F2345 err ", err)
 	}
@@ -505,12 +508,14 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 		SQNxorAK[i] = sqn[i] ^ AK[i]
 	}
 	te = time.Now().UnixNano() // Record the end timestamp of CONC generation
-	fmt.Printf("QLOG: Latency of Concealed SQN generation (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of Concealed SQN generation (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of Concealed SQN generation (nanos): %d", te-ts)
 	// fmt.Printf("SQN xor AK = %x\n", SQNxorAK)
 	ts = time.Now().UnixNano() // Record the start timestamp of AUTN generation
 	AUTN := append(append(SQNxorAK, AMF...), macA...)
 	te = time.Now().UnixNano() // Record the end timestamp of AUTN generation
-	fmt.Printf("QLOG: Latency of AUTN generation (nanos): %d\n", te-ts)
+	// fmt.Printf("QLOG: Latency of AUTN generation (nanos): %d\n", te-ts)
+	logger.ContextLog.Infof("QLOG: Latency of AUTN generation (nanos): %d", te-ts)
 	fmt.Printf("AUTN = %x\n", AUTN)
 
 	var av models.AuthenticationVector
@@ -530,7 +535,8 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 		xresStar := kdfValForXresStar[len(kdfValForXresStar)/2:]
 		// fmt.Printf("xresStar = %x\n", xresStar)
 		te = time.Now().UnixNano() // Record the end timestamp of xresStar generation
-		fmt.Printf("QLOG: Latency of xresStar generation (Challenge function) (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of xresStar generation (Challenge function) (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of xresStar generation (Challenge function) (nanos): %d", te-ts)
 
 		// derive Kausf
 		FC = UeauCommon.FC_FOR_KAUSF_DERIVATION
@@ -540,7 +546,8 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 		kdfValForKausf := UeauCommon.GetKDFValue(key, FC, P0, UeauCommon.KDFLen(P0), P1, UeauCommon.KDFLen(P1))
 		// fmt.Printf("Kausf = %x\n", kdfValForKausf)
 		te = time.Now().UnixNano() // Record the end timestamp of Kausf derivation
-		fmt.Printf("QLOG: Latency of Kausf derivation (nanos): %d\n", te-ts)
+		// fmt.Printf("QLOG: Latency of Kausf derivation (nanos): %d\n", te-ts)
+		logger.ContextLog.Infof("QLOG: Latency of Kausf derivation (nanos): %d", te-ts)
 
 		// Fill in rand, xresStar, autn, kausf
 		av.Rand = hex.EncodeToString(RAND)
